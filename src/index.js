@@ -4,6 +4,10 @@ const bcrypt = require("bcrypt");
 const collection = require("./config");
 
 const app = express();
+// convert data into json format
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: false }));
 
 // use EJS as the view engine
 
@@ -21,7 +25,22 @@ app.get("/signup", (req, res) => {
   res.render("signup");
 });
 
+// Register User
+
+app.post("/signup", async (req, res) => {
+  const data = {
+    name: req.body.username, // username is the "name" attribute of the HTML file <form><input type="text">
+    password: req.body.password, // username is the "name" attribute of the HTML file <form><input type="password">
+  };
+
+  const userData = await collection.insertMany(data);
+  console.log(userData);
+});
+
 const port = 5000;
 app.listen(port, () => {
   console.log(`App is listening on ${port}`);
 });
+
+// continue @ 17:37
+// https://www.youtube.com/watch?v=O5kh3sTVSvA
