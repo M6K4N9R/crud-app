@@ -8,6 +8,10 @@ const app = express();
 
 app.set("view engine", "ejs");
 
+// static file
+
+app.use(express.static('public'))
+
 app.get("/", (req, res) => {
   res.render("login");
 });
