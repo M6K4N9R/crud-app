@@ -51,6 +51,27 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// Login User
+
+app.post("/login", async (req, res) => {
+  try{
+    
+    const check = await collection.findOne({name: req.body.username});
+    if(!check) {
+      res.send("User name is not found")
+    }
+    const isPasswordMatch = await bcrypt.compare(req.body.password, check.password)
+    if(isPasswordMatch) {
+      res.render("home")
+    } else {
+      req.send("Wrong Password")
+    }
+  }
+  catch{
+res.send("Wrong details")
+  }
+})
+
 const port = 5000;
 app.listen(port, () => {
   console.log(`App is listening on ${port}`);
