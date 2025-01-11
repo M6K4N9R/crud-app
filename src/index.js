@@ -33,8 +33,15 @@ app.post("/signup", async (req, res) => {
     password: req.body.password, // username is the "name" attribute of the HTML file <form><input type="password">
   };
 
-  const userData = await collection.insertMany(data);
-  console.log(userData);
+  //check if user already exists
+  const existingUser = await collection.findOne({ name: data.name });
+
+  if (existingUser) {
+    res.send("User already exists. Please choose a different username.");
+  } else {
+    const userData = await collection.insertMany(data);
+    console.log(userData);
+  }
 });
 
 const port = 5000;
