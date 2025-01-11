@@ -54,23 +54,24 @@ app.post("/signup", async (req, res) => {
 // Login User
 
 app.post("/login", async (req, res) => {
-  try{
-    
-    const check = await collection.findOne({name: req.body.username});
-    if(!check) {
-      res.send("User name is not found")
+  try {
+    const check = await collection.findOne({ name: req.body.username });
+    if (!check) {
+      return res.send("User name is not found");
     }
-    const isPasswordMatch = await bcrypt.compare(req.body.password, check.password)
-    if(isPasswordMatch) {
-      res.render("home")
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      check.password
+    );
+    if (isPasswordMatch) {
+      return res.render("home");
     } else {
-      res.send("Wrong Password")
+      return res.send("Wrong Password");
     }
+  } catch {
+    return res.send("Wrong details");
   }
-  catch{
-res.send("Wrong details")
-  }
-})
+});
 
 const port = 5000;
 app.listen(port, () => {
