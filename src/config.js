@@ -12,7 +12,7 @@ connect
     console.log("Database is not connected");
   });
 
-// Schema
+// Schema +++++
 
 const LoginSchema = new mongoose.Schema({
   name: {
