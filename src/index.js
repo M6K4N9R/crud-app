@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const collection = require("./config");
+const { log } = require("console");
 
 const app = express();
 // convert data into json format
@@ -28,7 +29,7 @@ app.get("/signup", (req, res) => {
 // Register User
 
 app.post("/signup", async (req, res) => {
-  const data = {
+  let data = {
     name: req.body.username, // username is the "name" attribute of the HTML file <form><input type="text">
     password: req.body.password, // username is the "name" attribute of the HTML file <form><input type="password">
   };
@@ -39,6 +40,12 @@ app.post("/signup", async (req, res) => {
   if (existingUser) {
     res.send("User already exists. Please choose a different username.");
   } else {
+    // hash the password using bcrypt
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+    data = { ...data, password: hashedPassword }; // Replace original password with hashed one.
+
     const userData = await collection.insertMany(data);
     console.log(userData);
   }
