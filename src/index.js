@@ -64,7 +64,7 @@ app.post("/login", async (req, res) => {
     if(isPasswordMatch) {
       res.render("home")
     } else {
-      req.send("Wrong Password")
+      res.send("Wrong Password")
     }
   }
   catch{
